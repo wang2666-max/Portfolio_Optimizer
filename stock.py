@@ -16,7 +16,7 @@ class Stock:
 
         self.years=time_frame
         
-        self.time_frame = Period(-1*time_frame,Years)
+        self.period = Period(-1*time_frame,Years)
 
         self.term_dates = None
         self.term_price = None
@@ -27,7 +27,7 @@ class Stock:
 
     def _fetch_data(self):
         yahoo_financials = YahooFinancials(self.ticker)
-        start=UnitedStates(UnitedStates.NYSE).advance(Date(27,4,2023),Period("-1Y"))
+        start=UnitedStates(UnitedStates.NYSE).advance(self.mkt_date,self.period)
         data = yahoo_financials.get_historical_price_data(start_date=start.to_date().strftime('%Y-%m-%d'), end_date=self.mkt_date.to_date().strftime('%Y-%m-%d'), time_interval='daily')
         prices = [day['adjclose'] for day in data[self.ticker]['prices']]
         dates = [x['formatted_date'] for x in data[self.ticker]['prices']]
